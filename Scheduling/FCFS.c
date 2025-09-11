@@ -9,10 +9,10 @@ typedef struct prcs
     int rt, wt, tat, ct, st;
 } p;
 
-int cmp(const void *a, const void *b)
+int cmp( void *a,  void *b)
 {
-    const p *pa = (const p *)a;
-    const p *pb = (const p *)b;
+     p *pa = ( p *)a;
+     p *pb = ( p *)b;
     return (pa->at - pb->at);
 }
 int main()
