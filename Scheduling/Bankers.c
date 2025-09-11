@@ -13,7 +13,7 @@ int main()
 						{ 2, 3, 2 }, // P3 
 						{ 0, 0, 3 } }; // P4 
 
-	int max[5][3] = { { 7, 6, 3 }, // P0 
+	int max[5][3] = { { 7, 6, 3 }, // P0        // NAX request that can be made by that process
 					{ 3, 2, 2 }, // P1 
 					{ 8, 0, 2 }, // P2 
 					{ 2, 1, 2 }, // P3 
@@ -33,13 +33,13 @@ int main()
 	int y = 0; 
 	for (k = 0; k < n; k++) { 
 		for (i = 0; i < n; i++) { 
-			if (f[i] == 0) { 
+			if (f[i] == 0) {        // Incomplete process
 
 				int flag = 0; 
 				for (j = 0; j < r; j++) { 
 					if (need[i][j] > avail[j]){ 
 						flag = 1; 
-						break; 
+						break;      // can do anything for this process right now
 					} 
 				} 
 
