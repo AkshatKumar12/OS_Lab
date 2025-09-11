@@ -20,13 +20,14 @@ int main()
 					{ 5, 2, 3 } }; // P4 
 
 	int avail[3] = { 2, 3, 2 }; // These are Available Resources 
+	int need[n][r]; 
 
 	int f[n], ans[n], ind = 0; 
-	for (k = 0; k < n; k++) { 
+	/////////////////////////////////////////////
+	for (k = 0; k < n; k++) { 					// INITLAIZE FINISHED ARRAY USED AS A FLAG
 		f[k] = 0; 
 	} 
-	int need[n][r]; 
-	for (i = 0; i < n; i++) { 
+	for (i = 0; i < n; i++) { 					// FILL NEEDS ARRAY 
 		for (j = 0; j < r; j++) 
 			need[i][j] = max[i][j] - alloc[i][j]; 
 	} 
