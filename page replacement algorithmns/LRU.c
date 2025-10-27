@@ -34,19 +34,14 @@ int pageFaults(int pages[], int n, int capacity) {
 
     for (int i = 0; i < n; i++) {
         int current = pages[i];
-
-     
         if (!isPresent(frame, capacity, current)) {
             int replaceIndex = -1;
-
-         
             for (int j = 0; j < capacity; j++) {
                 if (frame[j] == -1) {
                     replaceIndex = j;
                     break;
                 }
             }
-
             if (replaceIndex == -1) {
                 replaceIndex = findLRU(lastUsed, capacity);
             }
@@ -54,13 +49,11 @@ int pageFaults(int pages[], int n, int capacity) {
             frame[replaceIndex] = current;
             page_faults++;
         }
-
         for (int j = 0; j < capacity; j++) {
             if (frame[j] == current)
                 lastUsed[j] = ++time;
         }
     }
-
     return page_faults;
 }
 
@@ -76,8 +69,6 @@ int main() {
     int capacity;
     printf("Enter the number of frames: ");
     scanf("%d", &capacity);
-
     printf("Total Page Faults = %d\n", pageFaults(pages, n, capacity));
-
     return 0;
 }
