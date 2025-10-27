@@ -1,55 +1,81 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-int frames, n;
+typedef struct {
+    int *arr;
+    int front, rear, size, capacity;
+} Queue;
 
-int finder(int val, int ram[]) {
-    for (int i = 0; i < frames; i++) {  // add a set to go from O(n)  --> O(1), but will need O(log n) to remmove element.
-        if (ram[i] == val) {
-            return 1;
-        }
-    }
-    return 0;
+Queue* createQueue(int capacity) {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->capacity = capacity;
+    q->arr = (int*)malloc(capacity * sizeof(int));
+    q->front = 0;
+    q->rear = -1;
+    q->size = 0;
+    return q;
 }
 
-void process(int val, int ram[]) {
-    for (int i = 0; i < frames - 1; i++) {      // replace by queue to go from O(n)  --> O(1)
-        ram[i] = ram[i + 1];
+void enqueue(Queue* q, int val) {
+    if (q->size == q->capacity) {
+
+        q->front = (q->front + 1) % q->capacity;
+        q->size--;
     }
-    ram[frames - 1] = val;
+    q->rear = (q->rear + 1) % q->capacity;
+    q->arr[q->rear] = val;
+    q->size++;
+}
+
+
+bool finder(int val, bool *hashSet) {
+    return hashSet[val];
 }
 
 int main() {
+    int frames, n;
     printf("Enter number of frames: ");
     scanf("%d", &frames);
 
     printf("Enter number of queries: ");
     scanf("%d", &n);
 
-    int arr[n], ram[frames];
-
-    for (int i = 0; i < frames; i++)
-        ram[i] = -1;
-
+    int *arr = (int*)malloc(n * sizeof(int));
     printf("Enter the array of pages: ");
+    int maxPage = 0;
     for (int i = 0; i < n; i++) {
         scanf("%d", &arr[i]);
+        if (arr[i] > maxPage) maxPage = arr[i];
     }
 
-    printf("Processing......\n");
+    bool *hashSet = (bool*)calloc(maxPage + 1, sizeof(bool)); 
+    Queue* q = createQueue(frames);
+
     int hit = 0, miss = 0;
 
-    for (int i = 0; i < n; i++) {       // add above fixes to go from O(n^2) to O(nlogn)
-        if (finder(arr[i], ram)) {
+    printf("\nProcessing......\n");
+    for (int i = 0; i < n; i++) {
+        int page = arr[i];
+        if (finder(page, hashSet)) {
             hit++;
         } else {
-            process(arr[i], ram);
             miss++;
+            if (q->size == frames) {
+                int oldPage = q->arr[q->front];
+                hashSet[oldPage] = false;
+            }
+            enqueue(q, page);
+            hashSet[page] = true;
         }
     }
 
     printf("\nNumber of hits: %d", hit);
     printf("\nNumber of misses: %d\n", miss);
 
+    free(arr);
+    free(hashSet);
+    free(q->arr);
+    free(q);
     return 0;
 }
